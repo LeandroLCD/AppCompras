@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icon="clr-namespace:AppCompras.Font"
+             xmlns:trigger="clr-namespace:AppCompras.Triggers"
+             xmlns:viewModel="clr-namespace:AppCompras.ViewModels.Home"
+             xmlns:transitions="clr-namespace:Plugin.SharedTransitions;assembly=Plugin.SharedTransitions"
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             Shell.NavBarIsVisible="False"
+             x:Class="AppCompras.Views.Home.HomePage">
+    <ContentPage.BindingContext>
+        <viewModel:HomePageViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+
+        <Grid 
+              BackgroundColor="{StaticResource Gray-900}">
+            <Grid RowDefinitions="50,*,80" 
+              RowSpacing="0"
+              VerticalOptions="FillAndExpand">
+                <Grid.Triggers>
+                    <MultiTrigger TargetType="VisualElement">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding IsVisibleBasked}" Value="True" />
+                        </MultiTrigger.Conditions>
+                        <MultiTrigger.EnterActions>
+                            <trigger:TVisualElementT Activate ="True" TranslateY="-500"/>
+                        </MultiTrigger.EnterActions>
+                        <MultiTrigger.ExitActions>
+                            <trigger:TVisualElementT Activate ="False" TranslateY="0"/>
+                        </MultiTrigger.ExitActions>
+
+                    </MultiTrigger>
+                </Grid.Triggers>
+                <!--#region Shell Bar Custons -->
+                <StackLayout Orientation="Horizontal" Padding="0,5" x:Name="ShellBar"
+                         BackgroundColor="{StaticResource Gray-200}">
+                    <Label Text="{Static icon:IconFont.Menu}"
+                       Style="{StaticResource IconMenuLabel}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowMenuCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="Category"
+                       Style="{StaticResource TitleLabelStyle}"
+                       HorizontalOptions="CenterAndExpand"/>
+                    <Label Text="{Static icon:IconFont.Sliders}"
+                       Style="{StaticResource IconMenuLabel}"
+                       Margin="10,5">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowSubMenuCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+                <!--#endregion-->
+                
+                <!--#region Collection Products -->
+                <pancake:PancakeView CornerRadius="0,0,52,52"
+                                 Padding="0"
+                                 Grid.Row="1"
+                                 BackgroundColor="{StaticResource Gray-100}">
+                    <ScrollView>
+                        <Grid x:Name="Container" 
+                          Margin="10,0"
+                          ColumnDefinitions="*"
+                          ColumnSpacing="10">
+
+                        </Grid>
+
+
+                    </ScrollView>
+
+
+                </pancake:PancakeView>
+                <!--#endregion-->
+                
+                <!--#region Basket Counter-->
+                <Grid Grid.Row="2"
+                  Padding="10"
+                  ColumnDefinitions="60,*,60">
+                   
+                    <Grid.Triggers>
+                        <MultiTrigger TargetType="VisualElement">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding IsVisibleBasked}" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.EnterActions>
+                                <trigger:TBasketCounter Activate ="True" TranslateY="-500"/>
+                            </MultiTrigger.EnterActions>
+                            <MultiTrigger.ExitActions>
+                                <trigger:TBasketCounter Activate ="False" TranslateY="0"/>
+                            </MultiTrigger.ExitActions>
+
+                        </MultiTrigger>
+                    </Grid.Triggers>
+                    <Frame Style="{StaticResource FrameStyle}">
+                        <Label Style="{StaticResource IconLabelBasked}"
+                       Text="{Static icon:IconFont.Basket}"/>
+                    </Frame>
+                    <BoxView CornerRadius="40"
+                         VerticalOptions="Center"
+                         HeightRequest="15"
+                         BackgroundColor="{StaticResource Gray-Black}"
+                         Grid.Column="1"/>
+                    <Frame Style="{StaticResource FrameStyle}" 
+                       Grid.Column="2">
+                        <Label Style="{StaticResource IconLabelBasked}"
+                           FontAttributes="Bold"
+                       Text="99"/>
+                    </Frame>
+
+                    <CollectionView Grid.Column="1">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout HorizontalItemSpacing="10" Orientation="Horizontal"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Style="{StaticResource FrameStyle}" 
+                                BackgroundColor="{StaticResource Gray-100}">
+                                    <Image Source="{Binding Image}"
+                                       HorizontalOptions="Center"
+                                       WidthRequest="20"
+                                        transitions:Transition.Group="{Binding Idproduct}"
+                                        transitions:Transition.Name="product" />
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <Grid Grid.ColumnSpan="3" >
+                        <Grid.GestureRecognizers>
+                            <SwipeGestureRecognizer Command="{Binding IsBaskedCommand}" Direction="Up"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                </Grid>
+                <!--#endregion-->
+                
+            </Grid>
+
+            <!--#region Basket Details -->
+            <Grid RowDefinitions="0.1*,0.9*" BackgroundColor="#C0808080" TranslationY="1000">
+                <Grid.Triggers>
+                    <MultiTrigger TargetType="VisualElement">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding IsVisibleBasked}" Value="True" />
+                        </MultiTrigger.Conditions>
+                        <MultiTrigger.EnterActions>
+                            <trigger:TVisualElementT Activate ="True" TranslateY="0"/>
+                        </MultiTrigger.EnterActions>
+                        <MultiTrigger.ExitActions>
+                            <trigger:TVisualElementT Activate ="False" TranslateY="1000"/>
+                        </MultiTrigger.ExitActions>
+
+                    </MultiTrigger>
+                </Grid.Triggers>
+                <Grid.GestureRecognizers>
+                    <SwipeGestureRecognizer Command="{Binding IsBaskedCommand}" Direction="Down"/>
+                </Grid.GestureRecognizers>
+
+                <pancake:PancakeView Grid.Row="1"
+                                         Border="{pancake:BorderMarkup Color={StaticResource Gray-Black}, Thickness='1'}"
+                                         CornerRadius="52,52,0,0">
+                    <Grid RowDefinitions="0.13*,0.61*,0.13*,0.13*" 
+                              Padding="20"
+                              BackgroundColor="{StaticResource Gray-900}">
+                        <BoxView Style="{StaticResource BoxViewHandleStyle}"/>
+                        <Label Text="Cart." 
+                                       FontAttributes="Bold"
+                                       FontSize="35"
+                                       TextColor="{StaticResource Gray-Black}"
+                                       Style="{StaticResource TitleLabelStyle}"
+                                       Margin="0,20,0,0"/>
+                        <Frame Style="{StaticResource FrameStyle}"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Center"
+                                   Margin="50,0"
+                                   WidthRequest="40"
+                                   HeightRequest="40">
+                            <Label Style="{StaticResource IconLabelBasked}"
+                                       Text="{Static icon:IconFont.Basket}"/>
+                        </Frame>
+                        <CollectionView Grid.Row="1">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="0.15*,0.7*,0.15">
+                                        <Frame Style="{StaticResource FrameStyle}"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   WidthRequest="40"
+                                                   Margin="0"
+                                                   HeightRequest="40">
+                                            <Image Source="{Binding Image}"
+                                                       WidthRequest="30"
+                                                       HeightRequest="30"/>
+                                        </Frame>
+                                        <StackLayout Grid.Column="1">
+                                            <Label Text="{Binding Detalle}" Style="{StaticResource TitleLabelStyle}"/>
+                                            <Label Text="{Binding Description}" Style="{StaticResource DescriptionLabelStyle}"/>
+                                        </StackLayout>
+                                        <Label Grid.Column="2" Text="{Binding SubTotal}" Style="{StaticResource TitleLabelStyle}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <Grid Grid.Row="2" ColumnDefinitions="0.1*,0.7*,0.2*" Margin="10,0,10,0">
+
+                            <Label Style="{StaticResource IconLabelBasked}"
+                                       Text="{Static icon:IconFont.Truck}" FontSize="40" RotationY="180"/>
+
+                            <StackLayout Grid.Column="1">
+                                <Label Text="Delivery" FontAttributes="Italic"
+                                           TextColor="{StaticResource Gray-100}"
+                                           HorizontalOptions="Start"
+                                           FontSize="18"
+                                           Style="{StaticResource DescriptionLabelStyle}"/>
+                                <Label Text="{Binding Description}" Style="{StaticResource DescriptionLabelStyle}"
+                                           HorizontalOptions="Start"
+                                           TextColor="{StaticResource Gray-500}"/>
+                            </StackLayout>
+                            <Label Text="{Binding DeliveryPrice, FallbackValue='$ 0.00'}" Grid.Column="2"
+                                       HorizontalOptions="Center"
+                                       TextColor="{StaticResource Gray-100}" 
+                                       FontSize="18" Style="{StaticResource DescriptionLabelStyle}"/>
+                        </Grid>
+                        <StackLayout Grid.Row="3" >
+                            <StackLayout Orientation="Horizontal" Margin="20,0">
+                                <Label Text="Total:" FontAttributes="Bold" 
+                                           Style="{StaticResource TitleLabelStyle}"
+                                           TextColor="{StaticResource Gray-100}" 
+                                           HorizontalOptions="StartAndExpand"/>
+                                <Label Text="{Binding Total, FallbackValue='$ 0.00'}" 
+                                           Style="{StaticResource TitleLabelStyle}"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource Gray-100}"/>
+                            </StackLayout>
+                            <Button Background="{StaticResource Gold}"
+                                        Text="Pagar"
+                                        TextColor="{StaticResource Gray-Black}"
+                                        FontAttributes="Bold"
+                                        CornerRadius="40"
+                                        Margin="30,0"/>
+                        </StackLayout>
+                    </Grid>
+                </pancake:PancakeView>
+
+            </Grid>
+            <!--#endregion-->
+            
+            <!--#region SubMenu -->
+            <ContentView BackgroundColor="Transparent"
+                         AbsoluteLayout.LayoutBounds="0,0,1,1"
+                         TranslationX="500"
+                         TranslationY="-500">
+                <ContentView.Triggers>
+                    <MultiTrigger TargetType="VisualElement">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding IsShowSubMenu}" Value="True" />
+                        </MultiTrigger.Conditions>
+                        <MultiTrigger.EnterActions>
+                            <trigger:TVisualElementT Activate ="True" TranslateX="0" TranslateY="0"/>
+                        </MultiTrigger.EnterActions>
+                        <MultiTrigger.ExitActions>
+                            <trigger:TVisualElementT Activate ="False" TranslateX="500" TranslateY="-500"/>
+                        </MultiTrigger.ExitActions>
+
+                    </MultiTrigger>
+                </ContentView.Triggers>
+                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
+                      TranslationY="{Binding Source={x:Reference ShellBar},Path=HeightRequest}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowSubMenuCommand}"/>
+                    </Grid.GestureRecognizers>
+                    <pancake:PancakeView CornerRadius="0,0,52,0"
+                                         HorizontalOptions="End"
+                                        VerticalOptions="Start">
+                        <StackLayout BackgroundColor="{StaticResource Gray-200}"
+                                 
+                                 HeightRequest="250"
+                                 WidthRequest="200"
+                                 >
+                        <Label Style="{StaticResource DescriptionLabelStyle}" Text="{Binding TitleSubMenu, FallbackValue='Seleccione'}"/>
+                        <ListView ItemsSource="{Binding SubMenuOptions}" x:Name="Optins" >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="0.2*,0.8*">
+                                        <Image Source="{Binding Key}"/>
+                                        <Label Grid.Column="1" Text="{Binding Value}" />
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={x:Reference Optins.BindingContext.OptionSelectCommand}}"
+                                                                  CommandParameter="{Binding .}"/>
+                                        </Grid.GestureRecognizers>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackLayout>
+                    </pancake:PancakeView>
+                    
+                </Grid>
+            </ContentView>
+            <!--#endregion-->
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

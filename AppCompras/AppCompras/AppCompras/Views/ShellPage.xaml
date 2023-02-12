@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Transitions:SharedTransitionShell xmlns="http://xamarin.com/schemas/2014/forms"
+                                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                                   xmlns:icon="clr-namespace:AppCompras.Font"
+                                   xmlns:home="clr-namespace:AppCompras.Views.Home"
+                                   xmlns:login="clr-namespace:AppCompras.Views.Login"
+                                   xmlns:Transitions="clr-namespace:Plugin.SharedTransitions;assembly=Plugin.SharedTransitions"
+                                   x:Class="AppCompras.Views.ShellPage"
+                                   x:Name="shell">
+    <Transitions:SharedTransitionShell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource PrimaryColor}" />
+                <Setter Property="Shell.ForegroundColor" Value="Black" />
+                <Setter Property="Shell.TitleColor" Value="Black" />
+                <Setter Property="Shell.DisabledColor" Value="Black" />
+                <Setter Property="Shell.UnselectedColor" Value="{StaticResource Gray-100}" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource PrimaryColor}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource Gray-100}"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource Gray-100}"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource Gray-100}"/>
+            </Style>
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
+
+           
+            <Style Class="FlyoutItemLayoutStyle" TargetType="Grid" ApplyToDerivedTypes="True">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{x:OnPlatform UWP=Transparent, iOS=White}" />
+                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="{StaticResource PrimaryColor}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Secondary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+            <!--
+            Custom Style you can apply to any Flyout Item
+            -->
+            <Style Class="MenuItemLayoutStyle" TargetType="Layout" ApplyToDerivedTypes="True">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="{StaticResource PrimaryColor}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+
+
+
+        </ResourceDictionary>
+
+        
+       
+    </Transitions:SharedTransitionShell.Resources>
+
+    <FlyoutItem Title="Home" Icon="{Static icon:IconFont.Bag}">
+            <ShellContent Title="Home" Route="HomePage" ContentTemplate="{DataTemplate home:HomePage}"/>
+        </FlyoutItem>
+    <FlyoutItem Title="Login" Icon="{Static icon:IconFont.Bag}">
+        <ShellContent Title="Login" Route="LoginPage" ContentTemplate="{DataTemplate login:LoginPage}"/>
+    </FlyoutItem>
+
+
+</Transitions:SharedTransitionShell>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary
+    x:Class="AppCompras.Styles.OthersStyles"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!--  Common style for Title labels  -->
+    <Style x:Key="FrameStyle" TargetType="Frame">
+        <Setter Property="CornerRadius" Value="40" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource Gold}" />
+        <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+        <Setter Property="VerticalOptions" Value="FillAndExpand" />
+        <Setter Property="HasShadow" Value="False" />
+        <Setter Property="Padding" Value="0" />
+        
+    </Style>
+
+    <Style x:Key="FrameEntryStyle" TargetType="Frame">
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource Gray-200}" />
+        <Setter Property="HeightRequest" Value="80" />
+        <Setter Property="Margin" Value="0,50,0,20" />
+        <Setter Property="HasShadow" Value="False" />
+        <Setter Property="Padding" Value="0" />
+
+    </Style>
+
+    <Style x:Key="BoxViewHandleStyle" TargetType="BoxView">
+        <Setter Property="CornerRadius" Value="40" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource Gray-100}" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="StartAndExpand" />
+        <Setter Property="HeightRequest" Value="5" />
+        <Setter Property="WidthRequest" Value="50" />
+        <Setter Property="Margin" Value="5" />
+
+    </Style>
+
+
+
+</ResourceDictionary>

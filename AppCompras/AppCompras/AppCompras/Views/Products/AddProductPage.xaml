@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:local="clr-namespace:AppCompras.Views.Products" 
+             xmlns:controls="clr-namespace:AppCompras.Controls"
+             xmlns:icon="clr-namespace:AppCompras.Font" 
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView" 
+             xmlns:viewModel="clr-namespace:AppCompras.ViewModels.Product"
+             x:Class="AppCompras.Views.Products.AddProductPage">
+    <ContentPage.BindingContext>
+        <viewModel:AddProductViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid>
+            <Grid RowDefinitions="50,*,80" 
+              RowSpacing="0"
+              BackgroundColor="{StaticResource Gray-Black}">
+                <!--#region Shell Bar Custons -->
+                <StackLayout Orientation="Horizontal" Padding="0,5" x:Name="ShellBar"
+                         BackgroundColor="{StaticResource Gray-200}">
+                    <Label Text="{Static icon:IconFont.Menu}"
+                       Style="{StaticResource IconMenuLabel}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowMenuCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="Catalogo de Productos"
+                       Style="{StaticResource TitleLabelStyle}"
+                       HorizontalOptions="CenterAndExpand"/>
+                </StackLayout>
+                <!--#endregion-->
+
+                <pancake:PancakeView CornerRadius="0,0,52,52"
+                                 Padding="0" 
+                                 Grid.Row="1"
+                                 BackgroundColor="{StaticResource Gray-100}">
+
+                    <ScrollView>
+                        <StackLayout Padding="20,0,20,20">
+
+                        <!--#region Carrusel de fotos -->
+                        <Grid>
+                            <CarouselView PeekAreaInsets="50" x:Name="carrusel" Loop="False" 
+                                          HeightRequest="200" ItemsSource="{Binding GetProduct.GetImageSource}">
+                                <CarouselView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="1"  />
+                                </CarouselView.ItemsLayout>
+                                <CarouselView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid >
+                                            <Frame Style="{StaticResource FrameStyle}" Margin="10">
+                                                <Grid>
+                                                    <Image Source="{Binding Source}" />
+                                                    <Label Text="{Static icon:IconFont.Trash}" Style="{StaticResource IconLabel}" TextColor="Black"
+                                                           HorizontalOptions="EndAndExpand" Margin="20"
+                                                           VerticalOptions="EndAndExpand">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding Source={x:Reference carrusel},Path=BindingContext.DeleteImageCommand}" 
+                                                                                  CommandParameter="{Binding .}"/>
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                </Grid>
+                                            </Frame>
+
+                                        </Grid>
+                                    </DataTemplate>
+                                </CarouselView.ItemTemplate>
+
+                            </CarouselView>
+                            <Button Text="{Static icon:IconFont.FolderOpen}"
+                                            Command="{Binding ShowImageCommand}"
+                                            BackgroundColor="{StaticResource Transparent}"
+                                            CommandParameter="False" Margin="0,0,0,10"
+                                            FontSize="20" HorizontalOptions="EndAndExpand"
+                                            Style="{StaticResource IconButtonCircularStyle}"/>
+                            <Button Text="{Static icon:IconFont.Camera}" Margin="0,100,0,0"
+                                            BackgroundColor="{StaticResource Transparent}"
+                                            Command="{Binding ShowImageCommand}"
+                                            CommandParameter="True"
+                                            FontSize="20" HorizontalOptions="EndAndExpand"
+                                            Style="{StaticResource IconButtonCircularStyle}"/>
+                        </Grid>
+                        <!--#endregion-->
+                        <local:EntryView labelTitle="Nombre" entryText="{Binding GetProduct.Name}"  BackgroundColor="{StaticResource Gray-100}" HorizontalOptions="FillAndExpand"/>
+                        
+                        <Grid ColumnDefinitions="*,*">
+                                <local:EntryView labelTitle="Sku" entryText="{Binding GetProduct.Sku}" BackgroundColor="{StaticResource Gray-100}" />
+                                <local:EntryView Grid.Column="1" labelTitle="BarCode" entryText="{Binding GetProduct.BarCode}"  BackgroundColor="{StaticResource Gray-100}" />
+                        </Grid>
+                            <local:EntryView labelTitle="Descripción" entryText="{Binding GetProduct.Description}"  BackgroundColor="{StaticResource Gray-100}" HorizontalOptions="FillAndExpand"/>
+                        <Grid ColumnDefinitions="*,*">
+                                <local:EntryView labelTitle="Categoria" entryText="{Binding GetProduct.Categories}" BackgroundColor="{StaticResource Gray-100}" />
+                                <local:EntryView labelTitle="Contenido" entryText="{Binding GetProduct.Conten}" Grid.Column="1"  BackgroundColor="{StaticResource Gray-100}" />
+                        </Grid>
+                        <Grid ColumnDefinitions="*,*">
+                                <local:EntryView labelTitle="Precio" entryText="{Binding GetProduct.Price}" BackgroundColor="{StaticResource Gray-100}"/>
+                                <local:EntryView labelTitle="P + Impuestos" entryText="{Binding GetProduct.PriceBruto}" Grid.Column="1" BackgroundColor="{StaticResource Gray-100}" />
+                        </Grid>
+                            <local:ComboView labelTitle="Impuestos" ItemsSource="{Binding GetProduct.Base64Image}" DisplayItem="Id" BackgroundColor="{StaticResource Gray-100}" HorizontalOptions="FillAndExpand"/>
+
+                        <Grid ColumnDefinitions="*,*" >
+                                <local:EntryView labelTitle="Oferta" IsEnabled="{Binding Source={x:Reference ofer}, Path=IsToggled}" BackgroundColor="{StaticResource Gray-100}" entryText="{Binding GetProduct.IsOffer}" />
+                                <local:EntryView labelTitle="Estado del Producto" entryText="{Binding GetProduct.IsOffer}" Grid.Column="1"  BackgroundColor="{StaticResource Gray-100}" />
+                                <Switch x:Name="ofer" IsToggled="{Binding GetProduct.IsOffer}" HorizontalOptions="End"/>
+                            </Grid>
+                            <local:EntryView labelTitle="Total" entryText="{Binding GetProduct.PriceBruto}"  BackgroundColor="{StaticResource Gray-100}" HorizontalOptions="FillAndExpand"/>
+
+                            <controls:ComboBoxView x:Name="comboBox" IsVisible="true" ItemsSource="{Binding GetCategory}" 
+                                                   CornerRadius="10" HeightRequest="60">
+
+                            </controls:ComboBoxView>
+                            
+                        </StackLayout>
+                    </ScrollView>
+                    
+                    
+                </pancake:PancakeView>
+
+                <Button Style="{StaticResource TitleButonStyle}" 
+                        Text="Crear" Grid.Row="2"
+                        Margin="10"
+                        Command="{Binding CreateCategoryCommand}"
+                        TextTransform="None" />
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

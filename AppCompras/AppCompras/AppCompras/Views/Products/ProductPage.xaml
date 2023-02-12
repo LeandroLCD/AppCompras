@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icon="clr-namespace:AppCompras.Font"
+             xmlns:trigger="clr-namespace:AppCompras.Triggers"
+             xmlns:viewModel="clr-namespace:AppCompras.ViewModels.Product"
+             xmlns:transitions="clr-namespace:Plugin.SharedTransitions;assembly=Plugin.SharedTransitions"
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView" xmlns:control="clr-namespace:AppCompras.Controls"
+             Shell.NavBarHasShadow="False"
+             x:Class="AppCompras.Views.Products.ProductPage">
+    <ContentPage.BindingContext>
+        <viewModel:ProductPageViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+
+        <Grid>
+            <Grid RowDefinitions="50,*,80" 
+              RowSpacing="0"
+              BackgroundColor="{StaticResource Gray-Black}">
+                <!--#region Shell Bar Custons -->
+                <StackLayout Orientation="Horizontal" Padding="0,5" x:Name="ShellBar"
+                         BackgroundColor="{StaticResource Gray-200}">
+                    <Label Text="{Static icon:IconFont.Menu}"
+                       Style="{StaticResource IconMenuLabel}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowMenuCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="Catalogo de Productos"
+                       Style="{StaticResource TitleLabelStyle}"
+                       HorizontalOptions="CenterAndExpand"/>
+                </StackLayout>
+                <!--#endregion-->
+
+                <!--#region Product -->
+                <pancake:PancakeView CornerRadius="0,0,52,52"
+                                 Padding="0"
+                                 Grid.Row="1"
+                                 BackgroundColor="{StaticResource Gray-100}">
+                    <ScrollView>
+                        <Grid x:Name="container" 
+                          Margin="10,0"
+                          ColumnDefinitions="*"
+                          ColumnSpacing="10">
+
+                        </Grid>
+
+
+                    </ScrollView>
+
+                </pancake:PancakeView>
+                <!--#endregion FormattedString='{0} Categorias'-->
+
+                <StackLayout Orientation="Horizontal" Grid.Row="2">
+                    <Button Text="{Binding Source={Static icon:IconFont.FolderOpen}, StringFormat='{0} Categorias'}" 
+                            Grid.Row="2"
+                            TextTransform="None"
+                            Command="{Binding ShowModalCommand}"
+                            WidthRequest="140" HeightRequest="50"
+                            
+                            CornerRadius="60"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                    Style="{StaticResource TitleButonStyle}"/>
+                    <Button Text="{Binding Source={Static icon:IconFont.Sliders}, StringFormat='{0} Impuestos'}" 
+                            Grid.Row="2"
+                            TextTransform="None"
+                            Command="{Binding ShowModalCommand}"
+                            WidthRequest="140" HeightRequest="50"
+                            
+                            CornerRadius="60"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                    Style="{StaticResource TitleButonStyle}"/>
+
+                    <Button Text="{Static icon:IconFont.Plus}" 
+                    Grid.Row="2"
+                        Command="{Binding AddProductCommand}"
+                    Style="{StaticResource IconButtonCircularStyle}"/>
+                </StackLayout>
+                
+
+
+            </Grid>
+
+          
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:control="clr-namespace:AppCompras.Controls"
+             xmlns:trigger="clr-namespace:AppCompras.Triggers" 
+             xmlns:viewModel="clr-namespace:AppCompras.ViewModels.Login" 
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
+             NavigationPage.HasNavigationBar="False"
+             x:Class="AppCompras.Views.Login.LoginPage">
+    <ContentPage.BindingContext>
+        <viewModel:LoginPageViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid>
+          <Grid RowDefinitions="250,*,40">
+            <Image Source="burbujas.png" TabIndex="0" BackgroundColor="Transparent" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.RowSpan="1" Rotation="270" Opacity="0.2" />
+            <Image Source="lock.png" x:Name="imageLock" VerticalOptions="EndAndExpand" Scale="1.5" />
+
+            <StackLayout Grid.Row="1" Padding="20,50,20,20">
+                <Label Text="Bienvenido a nuestra Tienda." 
+                       HorizontalOptions="Center" 
+                       Padding="20,0" 
+                       Margin="0,20"/>
+                
+                <Frame BackgroundColor="#F5F5F5" HeightRequest="80" Padding="0" Margin="0" CornerRadius="10" HasShadow="False">
+                    <Grid VerticalOptions="FillAndExpand" HeightRequest="80">
+                        <Label VerticalOptions="Center" HorizontalOptions="Start" Text="Email" FontSize="15" TextColor="#999AAF" Padding="20">
+                            <Label.Triggers>
+                                <MultiTrigger TargetType="Label" >
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding Source={x:Reference Email}, Path=IsFocused}" Value="True"/>
+                                    </MultiTrigger.Conditions>
+                                    <MultiTrigger.EnterActions>
+                                        <trigger:TLabel Activate="True" />
+                                    </MultiTrigger.EnterActions>
+                                </MultiTrigger>
+
+                                <MultiTrigger TargetType="Label" >
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding Source={x:Reference Email}, Path=Text, Converter={StaticResource TextLengthToBolean}}" Value="False"/>
+                                        <BindingCondition Binding="{Binding Source={x:Reference Email}, Path=IsFocused}" Value="False"/>
+                                    </MultiTrigger.Conditions>
+                                    <MultiTrigger.EnterActions>
+                                        <trigger:TLabel Activate="False" />
+                                    </MultiTrigger.EnterActions>
+                                </MultiTrigger>
+                            </Label.Triggers>
+                        </Label>
+
+                        <Label Style="{StaticResource ErrorLabelStyle}" 
+                               Text="{Binding ValidateEmail}" 
+                               Margin="20,50,0,0"/>
+
+                        <control:StandardEntry x:Name="Email" TabIndex="5"
+                                           Text="{Binding User.Email}"
+                                           CursorPosition="{Binding Source={x:Reference Email},Path=Text.Length}"
+                                           VerticalOptions="EndAndExpand" 
+                                           BorderThickness="1" 
+                                           BorderColor="Transparent" 
+                                           FontSize="15" 
+                                           TextColor="#999AAF" 
+                                           Margin="20"/>
+                    </Grid>
+                    
+                </Frame>
+
+                <Frame BackgroundColor="#F5F5F5" HeightRequest="80" Padding="0" Margin="0,20,0,0" CornerRadius="10" HasShadow="False">
+                    <Grid VerticalOptions="FillAndExpand" HeightRequest="80">
+                        <Label VerticalOptions="Center" HorizontalOptions="Start" Text="Contraseña" FontSize="15" TextColor="#999AAF" Padding="20">
+                            <Label.Triggers>
+                                <MultiTrigger TargetType="Label" >
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding Source={x:Reference Password}, Path=IsFocused}" Value="True"/>
+                                    </MultiTrigger.Conditions>
+                                    <MultiTrigger.EnterActions>
+                                        <trigger:TLabel Activate="True" />
+                                    </MultiTrigger.EnterActions>
+                                </MultiTrigger>
+
+                                <MultiTrigger TargetType="Label" >
+                                    <MultiTrigger.Conditions>
+                                        <BindingCondition Binding="{Binding Source={x:Reference Password}, Path=Text, Converter={StaticResource TextLengthToBolean}}" Value="False"/>
+                                        <BindingCondition Binding="{Binding Source={x:Reference Password}, Path=IsFocused}" Value="False"/>
+                                    </MultiTrigger.Conditions>
+                                    <MultiTrigger.EnterActions>
+                                        <trigger:TLabel Activate="False" />
+                                    </MultiTrigger.EnterActions>
+                                </MultiTrigger>
+                            </Label.Triggers>
+                        </Label>
+
+                        <Label Style="{StaticResource ErrorLabelStyle}" 
+                                   Text="{Binding ValidatePassword}" 
+                                   Margin="20,50,0,0"/>
+
+                        <control:StandardEntry x:Name="Password" TabIndex="2"
+                                           Text="{Binding User.Password}"
+                                           VerticalOptions="End" 
+                                           CursorPosition="{Binding Source={x:Reference Password},Path=Text.Length}"
+                                           IsPassword="{Binding IsVisiblePassword}"
+                                           BorderThickness="1" 
+                                           BorderColor="Transparent" 
+                                           FontSize="15" 
+                                           TextColor="#999AAF"
+                                           Margin="20"/>
+                        <Label Style="{StaticResource IconLabel}" 
+                               Text="{Binding IconPassword}" 
+                               FontSize="Medium" HorizontalOptions="End"
+                               Margin="20,0">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding IsPasswordCommand}" />
+                            </Label.GestureRecognizers>
+                            
+                        </Label>
+                    </Grid>
+
+                </Frame>
+                    <input:CheckBox Type="Material" x:Name="rememberme"
+                                    TabIndex="3"
+                                    Text="Mantener el inicio de sesión"
+                                    Margin="20,10"
+                                    CheckChangedCommand="{Binding RemembermeCommand}" 
+                                    CommandParameter="{Binding Source={Reference rememberme}, Path=IsChecked}"/>
+                    <Button Style="{StaticResource TitleButonStyle}" 
+                        Text="Iniciar Sesión" TabIndex="4"
+                        Command="{Binding LoginCommand}"
+                        TextTransform="None" />
+                <Button TextTransform="None"
+                        Command="{Binding IsRecoveryCommand}"
+                        Text="¿Recuperar Contraseña?" 
+                        HorizontalOptions="Center"
+                        Style="{StaticResource TransparentButtonStyle }"/>
+                
+            </StackLayout>
+              
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="2">
+                <Label Style="{x:StaticResource DescriptionLabelStyle}" 
+                       VerticalOptions="End" 
+                       Margin="0,0,-10,14" 
+                       Text="!No estas registrado¡"/>
+                <Button TextTransform="None"
+                        Command="{Binding ToGoSignInCommand}"
+                        VerticalOptions="Start"
+                        Margin="0,-9"
+                        HorizontalOptions="End"
+                        Text="Registrate Aqui!" 
+                        Style="{StaticResource TransparentButtonStyle }"/>
+            </StackLayout>
+        </Grid>
+
+            <ContentView x:Name="ModalRecoveryPassword" 
+                         VerticalOptions="FillAndExpand" 
+                         HorizontalOptions="FillAndExpand" 
+                         AbsoluteLayout.LayoutBounds="0,0,1,1"
+                         BackgroundColor="#C0808080"
+                         IsVisible="False"
+                         Opacity="0">
+                <ContentView.GestureRecognizers>
+                    <SwipeGestureRecognizer Command="{Binding IsRecoveryCommand}" Direction="Down"/>
+                </ContentView.GestureRecognizers>
+                <ContentView.Triggers>
+                    <MultiTrigger TargetType="VisualElement" >
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding IsVisibleSubMenu}" Value="True"/>
+                        </MultiTrigger.Conditions>
+                        <MultiTrigger.EnterActions>
+                            <trigger:TVisibleVisualElement Activate="True"/>
+                        </MultiTrigger.EnterActions>
+                        <MultiTrigger.ExitActions>
+                            <trigger:TVisibleVisualElement Activate="False"/>
+                        </MultiTrigger.ExitActions>
+                        
+                    </MultiTrigger>
+                </ContentView.Triggers>
+                
+                <pancake:PancakeView HeightRequest="300"
+                                     BackgroundColor="{StaticResource Gray-Bg}"
+                                     WidthRequest="{Binding Source={Reference ModalRecoveryPassword},Path=WidthRequest}"
+                                     CornerRadius="60,60,0,0"
+                                     HorizontalOptions="FillAndExpand"
+                                     VerticalOptions="EndAndExpand"
+                                     TranslationY="1000"
+                                     Opacity="0">       
+                    <pancake:PancakeView.Triggers>
+                        <MultiTrigger TargetType="pancake:PancakeView">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding IsVisibleModal}" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.EnterActions>
+                                <trigger:TPancakeView Activate ="True"/>
+                            </MultiTrigger.EnterActions>
+                            <MultiTrigger.ExitActions>
+                                <trigger:TPancakeView Activate ="False"/>
+                            </MultiTrigger.ExitActions>
+
+                        </MultiTrigger>
+                    </pancake:PancakeView.Triggers>
+                    <StackLayout Padding="20,30,20,20">
+                        <Label Style="{StaticResource TitleLabelStyle}" FontAttributes="Bold" Text="Recuperar Contraseña." />
+                        
+                        <Frame BackgroundColor="#F5F5F5" HeightRequest="80" Padding="0" Margin="0,50,0,20" CornerRadius="10" HasShadow="False">
+                            <Grid VerticalOptions="FillAndExpand" HeightRequest="80">
+                                <Label VerticalOptions="Center" HorizontalOptions="Start" Text="Email" FontSize="15" TextColor="#999AAF" Padding="20">
+                                    <Label.Triggers>
+                                        <MultiTrigger TargetType="Label" >
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding Source={x:Reference EmailRecovery}, Path=IsFocused}" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <trigger:TLabel Activate="True" />
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+
+                                        <MultiTrigger TargetType="Label" >
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding Source={x:Reference EmailRecovery}, Path=Text, Converter={StaticResource TextLengthToBolean}}" Value="False"/>
+                                                <BindingCondition Binding="{Binding Source={x:Reference EmailRecovery}, Path=IsFocused}" Value="False"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <trigger:TLabel Activate="False" />
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <control:StandardEntry x:Name="EmailRecovery" 
+                                               Text="{Binding User.Email}"
+                                               CursorPosition="{Binding Source={x:Reference EmailRecovery},Path=Text.Length}"
+                                               VerticalOptions="EndAndExpand" 
+                                               BorderThickness="1" 
+                                               BorderColor="Transparent" 
+                                               FontSize="15" 
+                                               TextColor="#999AAF" 
+                                               Margin="20"/>
+                            </Grid>
+
+                        </Frame>
+
+                        <Button Style="{StaticResource TitleButonStyle}" 
+                        Text="Recuperar Contraseña" 
+                        TextTransform="None" />
+
+                    </StackLayout>
+                </pancake:PancakeView>
+            </ContentView>
+        </Grid>
+        
+    </ContentPage.Content>
+</ContentPage>

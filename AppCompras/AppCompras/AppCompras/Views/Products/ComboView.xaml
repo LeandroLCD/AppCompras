@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:control="clr-namespace:AppCompras.Controls"
+             xmlns:icon="clr-namespace:AppCompras.Font"
+             xmlns:trigger="clr-namespace:AppCompras.Triggers"
+             xmlns:behaviorsPack="clr-namespace:Xamarin.Forms.BehaviorsPack;assembly=Xamarin.Forms.BehaviorsPack"
+             x:Name="comboView"
+             x:Class="AppCompras.Views.Products.ComboView">
+    
+    <ContentView.HeightRequest>
+        <OnPlatform Default="60"/>
+    </ContentView.HeightRequest>
+    <ContentView.BackgroundColor>
+        <OnPlatform Default="White"/>
+    </ContentView.BackgroundColor>
+    
+    <ContentView.Content>
+        <ContentView>
+            <Grid ColumnDefinitions="0.9*,0.1*">
+                <control:StandardEntry x:Name="entry" Grid.ColumnSpan="2"
+                                      VerticalOptions="Center" 
+                                      HeightRequest="{Binding Source={x:Reference comboView}, Path=HeightRequest}"
+                                      CornerRadius="10"
+                                      IsReadOnly="False"
+                                      BorderThickness="2"
+                                      TextTransform="None"
+                                      Padding="15,5,5,0"
+                                      BackgroundColor="{Binding Source={x:Reference comboView}, Path=BackgroundColor}"
+                                      BorderColor="{StaticResource Gray-Black}" 
+                                      FontSize="15" 
+                                      TextColor="#999AAF">
+                </control:StandardEntry>
+                <Label VerticalOptions="Center" Text="{Binding labelTitle}" 
+                       FontSize="15" Margin="10,0" 
+                       HorizontalOptions="Start"
+                       Background="{Binding Source={x:Reference comboView}, Path=BackgroundColor}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                    </Label.GestureRecognizers>
+                    <Label.Triggers>
+                        <MultiTrigger TargetType="Label" >
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding Source={x:Reference entry}, Path=IsFocused}" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.EnterActions>
+                                <trigger:TLabel Activate="True" Scale="0.8" TrasnlateY="-28"  />
+
+                            </MultiTrigger.EnterActions>
+                        </MultiTrigger>
+
+                        <MultiTrigger TargetType="Label" >
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding Source={x:Reference entry}, Path=Text, Converter={StaticResource TextLengthToBolean}}" Value="False"/>
+                                <BindingCondition Binding="{Binding Source={x:Reference entry}, Path=IsFocused}" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.EnterActions>
+                                <trigger:TLabel Activate="False" />
+                            </MultiTrigger.EnterActions>
+                        </MultiTrigger>
+                    </Label.Triggers>
+                    
+                    
+                </Label>
+                <Label Text="{Static icon:IconFont.Plus}"
+                       Style="{StaticResource IconLabel}"
+                       Grid.Column="1"
+                       Margin="5"
+                       VerticalOptions="Center"
+                       HorizontalOptions="End"
+                       TextColor="{StaticResource Gray-Black}">
+                    
+                </Label>
+                <ListView HeightRequest="{Binding Source={x:Reference comboView}, Path=HeightRequest}"
+                          BackgroundColor="{Binding Source={x:Reference comboView}, Path=BackgroundColor}"
+                          IsVisible="false" Grid.ColumnSpan="2"
+                          Opacity="1" 
+                          ItemsSource="{Binding Source={Reference comboView}, Path=ItemsSource}"
+                          x:Name="listView">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Label FontSize="15" Margin="10,0" 
+                                   HorizontalOptions="Start"
+                                   Text="{Binding .,Converter={StaticResource DisplayItemConverter}, ConverterParameter='Id'}"
+                                   Background="{Binding Source={x:Reference comboView}, Path=BackgroundColor}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    
+                </ListView>
+            </Grid>
+        </ContentView>
+    </ContentView.Content>
+</ContentView>

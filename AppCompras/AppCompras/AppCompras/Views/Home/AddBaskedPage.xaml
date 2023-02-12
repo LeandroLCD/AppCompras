@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icon="clr-namespace:AppCompras.Font"
+             xmlns:trigger="clr-namespace:AppCompras.Triggers"
+             xmlns:viewModel="clr-namespace:AppCompras.ViewModels.Home"
+             xmlns:transitions="clr-namespace:Plugin.SharedTransitions;assembly=Plugin.SharedTransitions"
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             Shell.NavBarIsVisible="False"
+             x:Class="AppCompras.Views.Home.AddBaskedPage">
+    <ContentPage.Content>
+        <Grid RowDefinitions="50,200*,400*,100">
+            <Label Text="{Static icon:IconFont.Spin3}"
+                       Style="{StaticResource IconMenuLabel}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackToCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <CarouselView Grid.Row="1" ItemsSource="{Binding Product.Images}">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Image />
+                        </StackLayout>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+
+            <StackLayout Grid.Row="2">
+                
+                
+            </StackLayout>
+            <StackLayout Grid.Row="3">
+
+
+            </StackLayout>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

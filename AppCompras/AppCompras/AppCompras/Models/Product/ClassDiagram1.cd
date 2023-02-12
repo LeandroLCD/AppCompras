@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AppCompras.Models.Product.CategoryProduct" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQABAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Models\Product\CategoryProduct.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppCompras.Models.Product.Products" Collapsed="true">
+    <Position X="2.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAiAQAABQAwAAABAAAAAAQQBCAAEEAQEAAAAAAAAAA=</HashCode>
+      <FileName>Models\Product\Products.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Tax" />
+      <Property Name="CategoryProduct" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AppCompras.Models.Product.Invoice" Collapsed="true">
+    <Position X="4.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAgAAAAAEAAAAAAAABAAAAAAAAAAg=</HashCode>
+      <FileName>Models\Product\Invoice.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Delivery" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AppCompras.Models.Product.Orders" Collapsed="true">
+    <Position X="5.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAQAAQAAAABAAAAAAAAAAAAAQAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Models\Product\Orders.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Products" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AppCompras.Models.Autentication.User" Collapsed="true">
+    <Position X="4.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAACIABAAAAAASAIQAAgAAAgACAQBBJAAQAAA=</HashCode>
+      <FileName>Models\Autentication\User.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Rol" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AppCompras.Models.Product.Delivery">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAgAQAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAQA=</HashCode>
+      <FileName>Models\Product\Delivery.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppCompras.Tax">
+    <Position X="6.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Models\Product\Tax.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="AppCompras.Models.Rol" Collapsed="true">
+    <Position X="2" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Models\Rol.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary
+    x:Class="AppCompras.Styles.ButonStyles"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!--  Common style for Title Buton  -->
+    <Style x:Key="TitleButonStyle" TargetType="Button">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="{DynamicResource Gray-Black}" />
+        <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+        <Setter Property="FontFamily" Value="Montserrat-SemiBold" />
+        <Setter Property="HeightRequest" Value="60" />
+        <Setter Property="FontFamily" Value="fonticons" />
+        <Setter Property="BackgroundColor" Value="#fcbc0f"/>
+        <Setter Property="CornerRadius" Value="10"/>
+    </Style>
+    <!--  Common style for Transparent buttons  -->
+    <Style x:Key="TransparentButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="#D6329C" />
+        <Setter Property="FontFamily" Value="Montserrat-SemiBold" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="HorizontalOptions" Value="Start" />
+        <Setter Property="VerticalOptions" Value="Start" />
+        <Setter Property="CornerRadius" Value="4" />
+    </Style>
+
+    <Style x:Key="IconButtonCircularStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="#fcbc0f" />
+        <Setter Property="FontFamily" Value="fonticons" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="HorizontalOptions" Value="EndAndExpand" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="CornerRadius" Value="25" />
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="WidthRequest" Value="50"/>
+    </Style>
+
+
+</ResourceDictionary>

@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:control="clr-namespace:AppCompras.Controls"
+             xmlns:trigger="clr-namespace:AppCompras.Triggers" 
+             xmlns:viewModel="clr-namespace:AppCompras.ViewModels.Login"
+             xmlns:icon="clr-namespace:AppCompras.Font"
+             NavigationPage.HasNavigationBar="False"
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             x:Class="AppCompras.Views.Login.SignInPage">
+    <ContentPage.BindingContext>
+        <viewModel:SignPageViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid>
+           <Grid RowDefinitions="100,*">
+            <Image Source="burbujas.png" BackgroundColor="Transparent" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.RowSpan="1" Rotation="270" Opacity="0.2" />
+            <Image Source="lock.png" x:Name="imageLock" VerticalOptions="EndAndExpand" Scale="1.3" Margin="0,20,0,0" />
+            <Label Style="{StaticResource IconMenuLabel}" 
+                   Text="{Static icon:IconFont.LeftOpen}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackToCommand}" />
+                </Label.GestureRecognizers>
+            </Label> 
+            <StackLayout Grid.Row="1" Padding="20,20,20,20">
+                <Label Text="Registar Nueva Cuenta." 
+                       Style="{StaticResource TitleLabelStyle}"
+                       HorizontalOptions="Center" 
+                       Padding="20,0" 
+                       Margin="0,20">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding IconMenuLabel}" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <ScrollView>
+                    <StackLayout>
+                        <!--#region Names -->
+                        <Frame BackgroundColor="#F5F5F5" HeightRequest="80" Padding="0" Margin="0" CornerRadius="10" HasShadow="False">
+                            <Grid VerticalOptions="FillAndExpand" HeightRequest="80">
+                                
+                                <Label VerticalOptions="Center" HorizontalOptions="Start" Text="Nombre y Apellido" FontSize="15" TextColor="#999AAF" Padding="20">
+                                    <Label.Triggers>
+                                        <MultiTrigger TargetType="Label" >
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding Source={x:Reference Name}, Path=IsFocused}" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <trigger:TLabel Activate="True" />
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+
+                                        <MultiTrigger TargetType="Label" >
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding Source={x:Reference Name}, Path=Text, Converter={StaticResource TextLengthToBolean}}" Value="False"/>
+                                                <BindingCondition Binding="{Binding Source={x:Reference Name}, Path=IsFocused}" Value="False"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <trigger:TLabel Activate="False" />
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label Style="{StaticResource ErrorLabelStyle}" 
+                                       Text="{Binding ValidateName}"
+                                       Margin="20,50,0,0"/>
+                                <control:StandardEntry x:Name="Name" 
+                                                   Text="{Binding User.Name}"
+                                                   CursorPosition="{Binding Source={x:Reference Name},Path=Text.Length}"
+                                                   VerticalOptions="EndAndExpand" 
+                                                   BorderColor="Transparent" 
+                                                   FontSize="15" 
+                                                   TextColor="{StaticResource Gray-Black}" 
+                                                   Margin="20"/>
+                            </Grid>
+
+                        </Frame>
+                        <!--#endregion-->
+
+                        <!--#region Phone -->
+                        <Frame BackgroundColor="#F5F5F5" HeightRequest="80" Padding="0" Margin="0" CornerRadius="10" HasShadow="False">
+                            <Grid VerticalOptions="FillAndExpand" HeightRequest="80">
+                                <Label VerticalOptions="Center" HorizontalOptions="Start" Text="Telefono" FontSize="15" TextColor="#999AAF" Padding="20">
+                                    <Label.Triggers>
+                                        <MultiTrigger TargetType="Label" >
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding Source={x:Reference Phone}, Path=IsFocused}" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <trigger:TLabel Activate="True" />
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+
+                                        <MultiTrigger TargetType="Label" >
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding Source={x:Reference Phone}, Path=Text, Converter={StaticResource TextLengthToBolean}}" Value="False"/>
+                                                <BindingCondition Binding="{Binding Source={x:Reference Phone}, Path=IsFocused}" Value="False"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <trigger:TLabel Activate="False" />
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label Style="{StaticResource ErrorLabelStyle}" 
+                                       Text="{Binding ValidatePhone}" 
+                                       Margin="20,50,0,0"/>
+                                <control:StandardEntry x:Name="Phone" 
+                                                   Text="{Binding User.Phone}"
+                                                   Keyboard="Telephone"
+                                                   CursorPosition="{Binding Source={x:Reference Phone},Path=Text.Length}"
+                                                   VerticalOptions="EndAndExpand" 
+                                                   BorderColor="Transparent" 
+                                                   FontSize="15" 
+                                                   TextColor="{StaticResource Gray-Black}"
+                                                   Margin="20"/>
+
+                            </Grid>
+
+                        </Frame>
+                        <!--#endregion-->
+
+                        <!--#region Email -->
+                        <Frame BackgroundColor="#F5F5F5" HeightRequest="80" Padding="0" Margin="0" CornerRadius="10" HasShadow="False">
+                            <Grid VerticalOptions="FillAndExpand" HeightRequest="80">
+                                <Label VerticalOptions="Center" HorizontalOptions="Start" Text="Email" FontSize="15" TextColor="#999AAF" Padding="20">
+                                    <Label.Triggers>
+                                        <MultiTrigger TargetType="Label" >
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding Source={x:Reference Email}, Path=IsFocused}" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <trigger:TLabel Activate="True" />
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+
+                                        <MultiTrigger TargetType="Label" >
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding Source={x:Reference Email}, Path=Text, Converter={StaticResource TextLengthToBolean}}" Value="False"/>
+                                                <BindingCondition Binding="{Binding Source={x:Reference Email}, Path=IsFocused}" Value="False"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <trigger:TLabel Activate="False" />
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label Style="{StaticResource ErrorLabelStyle}" 
+                                       Text="{Binding ValidateEmail}" 
+                                       Margin="20,50,0,0"/>
+                                <control:StandardEntry x:Name="Email" 
+                                                   Text="{Binding User.Email}"
+                                                   CursorPosition="{Binding Source={x:Reference Email},Path=Text.Length}"
+                                                   VerticalOptions="EndAndExpand" 
+                                                   BorderColor="Transparent" 
+                                                   FontSize="15" 
+                                                   TextColor="{StaticResource Gray-Black}"
+                                                   Margin="20"/>
+                            </Grid>
+
+                        </Frame>
+
+                        <Frame BackgroundColor="#F5F5F5" HeightRequest="80" Padding="0" Margin="0" CornerRadius="10" HasShadow="False">
+                            <Grid VerticalOptions="FillAndExpand" HeightRequest="80">
+                                <Label VerticalOptions="Center" HorizontalOptions="Start" Text="Confirmar Email" FontSize="15" TextColor="#999AAF" Padding="20">
+                                    <Label.Triggers>
+                                        <MultiTrigger TargetType="Label" >
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding Source={x:Reference VerifyEmail}, Path=IsFocused}" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <trigger:TLabel Activate="True" />
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+
+                                        <MultiTrigger TargetType="Label" >
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding Source={x:Reference VerifyEmail}, Path=Text, Converter={StaticResource TextLengthToBolean}}" Value="False"/>
+                                                <BindingCondition Binding="{Binding Source={x:Reference VerifyEmail}, Path=IsFocused}" Value="False"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <trigger:TLabel Activate="False" />
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label Style="{StaticResource ErrorLabelStyle}" 
+                                       Text="{Binding ValidateEmail}" 
+                                       Margin="20,50,0,0"/>
+                                <control:StandardEntry x:Name="VerifyEmail" 
+                                                   Text="{Binding User.VerifyEmail}"
+                                                   CursorPosition="{Binding Source={x:Reference VerifyEmail},Path=Text.Length}"
+                                                   VerticalOptions="EndAndExpand"
+                                                   BorderColor="Transparent" 
+                                                   FontSize="15" 
+                                                   TextColor="{StaticResource Gray-Black}"
+                                                   Margin="20"/>
+                            </Grid>
+
+                        </Frame>
+                        <!--#endregion-->
+                        
+                        <!--#region Password -->
+                        <Frame BackgroundColor="#F5F5F5" HeightRequest="80" Padding="0" CornerRadius="10" HasShadow="False">
+                            <Grid VerticalOptions="FillAndExpand" HeightRequest="80">
+                                <Label VerticalOptions="Center" HorizontalOptions="Start" Text="Contraseña" FontSize="15" TextColor="#999AAF" Padding="20">
+                                    <Label.Triggers>
+                                        <MultiTrigger TargetType="Label" >
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding Source={x:Reference Password}, Path=IsFocused}" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <trigger:TLabel Activate="True" />
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+
+                                        <MultiTrigger TargetType="Label" >
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding Source={x:Reference Password}, Path=Text, Converter={StaticResource TextLengthToBolean}}" Value="False"/>
+                                                <BindingCondition Binding="{Binding Source={x:Reference Password}, Path=IsFocused}" Value="False"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <trigger:TLabel Activate="False" />
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label Style="{StaticResource ErrorLabelStyle}" 
+                                       Text="{Binding ValidatePassword}" 
+                                       Margin="20,50,0,0"/>
+                                <control:StandardEntry x:Name="Password" 
+                                                   Text="{Binding User.Password}"
+                                                   VerticalOptions="End" 
+                                                   CursorPosition="{Binding Source={x:Reference Password},Path=Text.Length}"
+                                                   IsPassword="{Binding IsVisiblePassword}"
+                                                   BorderColor="Transparent" 
+                                                   FontSize="15" 
+                                                   TextColor="{StaticResource Gray-Black}"
+                                                   Margin="20"/>
+                                <Label Style="{StaticResource IconLabel}" 
+                                   Text="{Binding IconPassword}" 
+                                   FontSize="Medium" HorizontalOptions="End"
+                                   Margin="20,0">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding IsPasswordCommand}" />
+                                    </Label.GestureRecognizers>
+
+                                </Label>
+                            </Grid>
+
+                        </Frame>
+
+                        <Frame BackgroundColor="#F5F5F5" HeightRequest="80" Padding="0" CornerRadius="10" HasShadow="False">
+                            <Grid VerticalOptions="FillAndExpand" HeightRequest="80">
+                                <Label VerticalOptions="Center" HorizontalOptions="Start" Text="Confirmar Contraseña" FontSize="15" TextColor="#999AAF" Padding="20">
+                                    <Label.Triggers>
+                                        <MultiTrigger TargetType="Label" >
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding Source={x:Reference VerifyPassword}, Path=IsFocused}" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <trigger:TLabel Activate="True" />
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+
+                                        <MultiTrigger TargetType="Label" >
+                                            <MultiTrigger.Conditions>
+                                                <BindingCondition Binding="{Binding Source={x:Reference VerifyPassword}, Path=Text, Converter={StaticResource TextLengthToBolean}}" Value="False"/>
+                                                <BindingCondition Binding="{Binding Source={x:Reference VerifyPassword}, Path=IsFocused}" Value="False"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <trigger:TLabel Activate="False" />
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label Style="{StaticResource ErrorLabelStyle}" 
+                                       Text="{Binding ValidatePassword}" 
+                                       Margin="20,50,0,0"/>
+                                <control:StandardEntry x:Name="VerifyPassword" 
+                                               Text="{Binding User.VerifyPassword}"
+                                               VerticalOptions="End" 
+                                               CursorPosition="{Binding Source={x:Reference VerifyPassword},Path=Text.Length}"
+                                               IsPassword="{Binding IsVisiblePassword}"
+                                               BorderColor="Transparent" 
+                                               FontSize="15" 
+                                                   TextColor="{StaticResource Gray-Black}"
+                                               Margin="20"/>
+                                <Label Style="{StaticResource IconLabel}" 
+                               Text="{Binding IconPassword}" 
+                               FontSize="Medium" HorizontalOptions="End"
+                               Margin="20,0">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding IsPasswordCommand}" />
+                                    </Label.GestureRecognizers>
+
+                                </Label>
+                            </Grid>
+
+                        </Frame>
+                        <!--#endregion-->
+
+                    </StackLayout>
+                    
+                </ScrollView>
+
+                <Button Style="{StaticResource TitleButonStyle}" 
+                        Text="Sign In" 
+                        Command="{Binding SignInCommand}"
+                        VerticalOptions="EndAndExpand"
+                        TextTransform="None" />
+
+            </StackLayout>
+            
+        </Grid>
+
+            <ContentView VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" AbsoluteLayout.LayoutBounds="0,0,1,1">
+                <pancake:PancakeView HeightRequest="250" HorizontalOptions="CenterAndExpand" VerticalOptions="End">
+                    <StackLayout>
+
+                    </StackLayout>
+                </pancake:PancakeView>
+            </ContentView>
+        </Grid>
+        
+    </ContentPage.Content>
+</ContentPage>

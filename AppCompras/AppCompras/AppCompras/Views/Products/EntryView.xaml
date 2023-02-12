@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:control="clr-namespace:AppCompras.Controls"
+             xmlns:trigger="clr-namespace:AppCompras.Triggers"
+             xmlns:behaviorsPack="clr-namespace:Xamarin.Forms.BehaviorsPack;assembly=Xamarin.Forms.BehaviorsPack"
+             x:Class="AppCompras.Views.Products.EntryView"
+             x:Name="contentView">
+    <ContentView.HeightRequest>
+        <OnPlatform Default="60"/>
+    </ContentView.HeightRequest>
+    <ContentView.BackgroundColor>
+        <OnPlatform Default="White"/>
+    </ContentView.BackgroundColor>
+    <ContentView.Content>
+        <ContentView BackgroundColor="{Binding Source={x:Reference contentView}, Path=BackgroundColor}" >
+            <Grid VerticalOptions="FillAndExpand" BackgroundColor="{Binding Source={x:Reference contentView}, Path=BackgroundColor}" Padding="0,5,0,0" >
+                   
+                    <control:StandardEntry x:Name="entry" Text="{Binding entryText}"
+                                               CursorPosition="{Binding Source={x:Reference entry},Path=Text.Length}"
+                                               VerticalOptions="Center" HeightRequest="{Binding Source={x:Reference contentView}, Path=HeightRequest}"
+                                           CornerRadius="10"
+                                           IsReadOnly="{Binding Source={Reference contentView}, Path=IsEnabled, Converter={StaticResource InverseBoolConverter}}"
+                                               BorderThickness="2"
+                                               TextTransform="Uppercase"
+                                               Padding="15,5,5,0"
+                                           BackgroundColor="{Binding Source={x:Reference contentView}, Path=BackgroundColor}"
+                                               BorderColor="{StaticResource Gray-Black}" 
+                                               FontSize="15" 
+                                               TextColor="#999AAF">
+                        <control:StandardEntry.Behaviors>
+                            <behaviorsPack:EventToCommandBehavior EventName="TextChanged"
+                                                                  Command="{Binding CommandChanged}"
+                                                                  EventArgsPropertyPath="NewTextValue"/>
+                        </control:StandardEntry.Behaviors>
+                    </control:StandardEntry>
+                <Label VerticalOptions="Center" Text="{Binding labelTitle}" 
+                       FontSize="15" Margin="10,0" 
+                       HorizontalOptions="Start"
+                       Background="{Binding Source={x:Reference contentView}, Path=BackgroundColor}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                    </Label.GestureRecognizers>
+                    <Label.Triggers>
+                        <MultiTrigger TargetType="Label" >
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding Source={x:Reference entry}, Path=IsFocused}" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.EnterActions>
+                                <trigger:TLabel Activate="True" Scale="0.8" TrasnlateY="-28"  />
+                                
+                            </MultiTrigger.EnterActions>
+                        </MultiTrigger>
+
+                        <MultiTrigger TargetType="Label" >
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding Source={x:Reference entry}, Path=Text, Converter={StaticResource TextLengthToBolean}}" Value="False"/>
+                                <BindingCondition Binding="{Binding Source={x:Reference entry}, Path=IsFocused}" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.EnterActions>
+                                <trigger:TLabel Activate="False" />
+                            </MultiTrigger.EnterActions>
+                        </MultiTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
+
+        </ContentView>
+  </ContentView.Content>
+</ContentView>

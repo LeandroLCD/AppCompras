@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:themes="clr-namespace:AppCompras.Themes" 
+             xmlns:converter="clr-namespace:AppCompras.Converter"
+             xmlns:icon="clr-namespace:AppCompras.Font"
+             xmlns:controls="clr-namespace:AppCompras.Controls"
+             x:Class="AppCompras.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <themes:LightTheme />
+            </ResourceDictionary.MergedDictionaries >
+        </ResourceDictionary>
+        <ResourceDictionary>
+            <converter:IndexToColorConverter x:Key="IndexToColorConverter"/>
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converter:TextLengthToBolean x:Key="TextLengthToBolean"/>
+            <converter:DisplayItemConverter x:Key="DisplayItemConverter"/>
+        </ResourceDictionary>
+        
+    </Application.Resources>
+    
+</Application>
