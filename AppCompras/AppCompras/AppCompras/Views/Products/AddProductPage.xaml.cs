@@ -19,14 +19,5 @@ namespace AppCompras.Views.Products
 
         }
 
-        private void ComboBoxView_Focused(object sender, FocusEventArgs e)
-        {
-
-        }
-
-        private void ListView_Focused(object sender, FocusEventArgs e)
-        {
-
-        }
     }
 }

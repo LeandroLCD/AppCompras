@@ -127,7 +127,7 @@ namespace AppCompras.ViewModels.Home
                     },
                     new Label
                     {
-                        Text = "$" + item.PriceBruto,
+                        Text = $"{item.TotalPrice:C2}",
                         FontAttributes = FontAttributes.Bold,
                         FontSize = 22,
                         Margin = new Thickness(0, 6),

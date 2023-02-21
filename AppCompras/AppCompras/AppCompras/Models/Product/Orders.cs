@@ -31,7 +31,7 @@ namespace AppCompras.Models.Product
         public Orders(Products products, double quality)
         {
             ProductId = products.Id;
-            Price = products.Price;
+            Price = products.TotalPrice;
             Quality= quality;
             SubTotal = Price * Quality;
             Total = Price * Quality;

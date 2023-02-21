@@ -6,7 +6,7 @@
              xmlns:icon="clr-namespace:AppCompras.Font" 
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView" 
-             xmlns:viewModel="clr-namespace:AppCompras.ViewModels.Product"
+             xmlns:viewModel="clr-namespace:AppCompras.ViewModels.Product" xmlns:trigger="clr-namespace:AppCompras.Triggers" xmlns:Behaviors="clr-namespace:AppCompras.Behaviors"
              x:Class="AppCompras.Views.Products.AddProductPage">
     <ContentPage.BindingContext>
         <viewModel:AddProductViewModel />
@@ -39,14 +39,25 @@
                     <ScrollView>
                         <StackLayout Padding="20,0,20,20">
 
-                        <!--#region Carrusel de fotos -->
+                            <!--#region Images -->
                         <Grid>
                             <CarouselView PeekAreaInsets="50" x:Name="carrusel" Loop="False" 
                                           HeightRequest="200" ItemsSource="{Binding GetProduct.GetImageSource}">
                                 <CarouselView.ItemsLayout>
                                     <LinearItemsLayout Orientation="Horizontal" ItemSpacing="1"  />
                                 </CarouselView.ItemsLayout>
-                                <CarouselView.ItemTemplate>
+                                    <CarouselView.EmptyView>
+                                        <ContentView>
+                                            <Frame Padding="10" HasShadow="False" BackgroundColor="Transparent"
+                                                   BorderColor="{StaticResource Gray-Black}"
+                                                   CornerRadius="15"
+                                                   HorizontalOptions="Center" VerticalOptions="Center">
+                                                <Image Source="camara.png" />
+
+                                            </Frame>
+                                        </ContentView>
+                                    </CarouselView.EmptyView>
+                                    <CarouselView.ItemTemplate>
                                     <DataTemplate>
                                         <Grid >
                                             <Frame Style="{StaticResource FrameStyle}" Margin="10">
@@ -68,48 +79,136 @@
                                 </CarouselView.ItemTemplate>
 
                             </CarouselView>
-                            <Button Text="{Static icon:IconFont.FolderOpen}"
+                                <Frame Style="{StaticResource FrameStyle}"
+                                       BackgroundColor="{StaticResource Gray-100}"
+                                       Margin="0,0,0,60"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="EndAndExpand">
+                                    <Button Text="{Static icon:IconFont.FolderOpen}"
                                             Command="{Binding ShowImageCommand}"
                                             BackgroundColor="{StaticResource Transparent}"
-                                            CommandParameter="False" Margin="0,0,0,10"
-                                            FontSize="20" HorizontalOptions="EndAndExpand"
+                                            CommandParameter="False" 
+                                            FontSize="20" 
                                             Style="{StaticResource IconButtonCircularStyle}"/>
-                            <Button Text="{Static icon:IconFont.Camera}" Margin="0,100,0,0"
+                                </Frame>
+                                <Frame Style="{StaticResource FrameStyle}"
+                                       BackgroundColor="{StaticResource Gray-200}"
+                                       Margin="0,60,0,10"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="EndAndExpand">
+                                    <Button Text="{Static icon:IconFont.Camera}" 
                                             BackgroundColor="{StaticResource Transparent}"
                                             Command="{Binding ShowImageCommand}"
                                             CommandParameter="True"
                                             FontSize="20" HorizontalOptions="EndAndExpand"
                                             Style="{StaticResource IconButtonCircularStyle}"/>
-                        </Grid>
-                        <!--#endregion-->
-                        <local:EntryView labelTitle="Nombre" entryText="{Binding GetProduct.Name}"  BackgroundColor="{StaticResource Gray-100}" HorizontalOptions="FillAndExpand"/>
-                        
-                        <Grid ColumnDefinitions="*,*">
-                                <local:EntryView labelTitle="Sku" entryText="{Binding GetProduct.Sku}" BackgroundColor="{StaticResource Gray-100}" />
-                                <local:EntryView Grid.Column="1" labelTitle="BarCode" entryText="{Binding GetProduct.BarCode}"  BackgroundColor="{StaticResource Gray-100}" />
-                        </Grid>
-                            <local:EntryView labelTitle="Descripción" entryText="{Binding GetProduct.Description}"  BackgroundColor="{StaticResource Gray-100}" HorizontalOptions="FillAndExpand"/>
-                        <Grid ColumnDefinitions="*,*">
-                                <local:EntryView labelTitle="Categoria" entryText="{Binding GetProduct.Categories}" BackgroundColor="{StaticResource Gray-100}" />
-                                <local:EntryView labelTitle="Contenido" entryText="{Binding GetProduct.Conten}" Grid.Column="1"  BackgroundColor="{StaticResource Gray-100}" />
-                        </Grid>
-                        <Grid ColumnDefinitions="*,*">
-                                <local:EntryView labelTitle="Precio" entryText="{Binding GetProduct.Price}" BackgroundColor="{StaticResource Gray-100}"/>
-                                <local:EntryView labelTitle="P + Impuestos" entryText="{Binding GetProduct.PriceBruto}" Grid.Column="1" BackgroundColor="{StaticResource Gray-100}" />
-                        </Grid>
-                            <local:ComboView labelTitle="Impuestos" ItemsSource="{Binding GetProduct.Base64Image}" DisplayItem="Id" BackgroundColor="{StaticResource Gray-100}" HorizontalOptions="FillAndExpand"/>
-
-                        <Grid ColumnDefinitions="*,*" >
-                                <local:EntryView labelTitle="Oferta" IsEnabled="{Binding Source={x:Reference ofer}, Path=IsToggled}" BackgroundColor="{StaticResource Gray-100}" entryText="{Binding GetProduct.IsOffer}" />
-                                <local:EntryView labelTitle="Estado del Producto" entryText="{Binding GetProduct.IsOffer}" Grid.Column="1"  BackgroundColor="{StaticResource Gray-100}" />
-                                <Switch x:Name="ofer" IsToggled="{Binding GetProduct.IsOffer}" HorizontalOptions="End"/>
+                                </Frame>
                             </Grid>
-                            <local:EntryView labelTitle="Total" entryText="{Binding GetProduct.PriceBruto}"  BackgroundColor="{StaticResource Gray-100}" HorizontalOptions="FillAndExpand"/>
+                        <!--#endregion-->
+                            
+                            <!--#region Product Description -->
+                            <controls:EntryView Title="Nombre"
+                                                Text="{Binding  GetProduct.Name}"
+                                                Style="{StaticResource EntryViewStyle}" />
+                            
+                            <Grid ColumnDefinitions="*,*">
+                                <controls:EntryView Title="Sku" 
+                                                    Style="{StaticResource EntryViewStyle}" 
+                                                Text="{Binding  GetProduct.Sku}" />
 
-                            <controls:ComboBoxView x:Name="comboBox" IsVisible="true" ItemsSource="{Binding GetCategory}" 
-                                                   CornerRadius="10" HeightRequest="60">
+                                <controls:EntryView Title="BarCode"
+                                                    Grid.Column="1" 
+                                                    Style="{StaticResource EntryViewStyle}"
+                                                    />
+
+
+                            </Grid>
+                            
+                            <controls:EntryView Title="Descripción"
+                                                Text="{Binding  GetProduct.Description}"
+                                                BorderWidth="1" 
+                                                 Style="{StaticResource EntryViewStyle}"/>
+
+                            
+                            
+                                <Grid ColumnDefinitions="*,*">
+                                    
+                                <controls:EntryView  Title="Contenido"
+                                                     Text="{Binding  GetProduct.Conten}"
+                                                     Style="{StaticResource EntryViewStyle}"
+                                                />
+
+                                <controls:ComboBoxView Title="Impuestos" IsVisible="true" ItemsSource="{Binding GetProduct.Taxs}" 
+                                                       AddItemCommad="{Binding ModalTaxesCommand}" Grid.Column="1" 
+                                                       BackgroundColor="{StaticResource Gray-100}"
+                                                       BackgroundColorIcon="{StaticResource Gold}"
+                                                       SelectionChangedCommand="{Binding DeleteTaxesCommand}"
+                                                       CornerRadius="15" HeightRequest="50"
+                                                       x:Name="impuestos">
+
+                                </controls:ComboBoxView>
+                                 </Grid>
+                            <!--#endregion-->
+
+                            <!--#region Category -->
+                            <controls:ComboBoxView Title="Categorias" IsVisible="true" ItemsSource="{Binding GetProductCategories}" 
+                                                       AddItemCommad="{Binding ModalCategoryCommand}"
+                                                   TitleColor="{StaticResource Gray-600}"
+                                                   BackgroundColor="{StaticResource Gray-100}"
+                                                       BackgroundColorIcon="{StaticResource Gold}"
+                                                       SelectionChangedCommand="{Binding DeleteCategoryCommand}"
+                                                       CornerRadius="15" HeightRequest="50">
 
                             </controls:ComboBoxView>
+                            <!--#endregion-->
+
+                            <!--#region SubTotals -->
+                            <Grid ColumnDefinitions="*,*,*" >
+                                <controls:EntryView Title="P. Bruto"
+                                                    TextChangedCommand="{Binding GetProductChangedCommand}"
+                                                Text="{Binding GetProduct.GrossPrice}"
+                                                Style="{StaticResource EntryViewStyle}">
+                                    
+                                    
+                                </controls:EntryView>
+                                <controls:EntryView Text="{Binding GetProduct.Offer}" 
+                                                    IsReadOnly="{Binding Source={Reference ofer}, Path=IsToggled, Converter={StaticResource InverseBoolConverter}}"
+                                                Grid.Column="1"
+                                                Title="Oferta"
+                                                Style="{StaticResource EntryViewStyle}"/>
+
+                                <Switch x:Name="ofer" IsToggled="{Binding GetProduct.IsOffer}" Grid.Column="1" HorizontalOptions="End"/>
+
+                                <controls:EntryView Text="{Binding GetProduct.Discounts}" 
+                                                    IsReadOnly="True" 
+                                                    Title="Descuento"
+                                                    Grid.Column="2"
+                                                    Style="{StaticResource EntryViewStyle}"/>
+                            </Grid>
+                            <!--#endregion-->
+
+                            <!--#region Totals -->
+                            <Grid ColumnDefinitions="*,*,*">
+                                <controls:EntryView Title="P. Neto"
+                                                Text="{Binding GetProduct.NetPrice}"
+                                                IsReadOnly="True"
+                                                    Style="{StaticResource EntryViewStyle}"/>
+                                <controls:EntryView Title="T. Impuestos"
+                                                Text="{Binding GetProduct.TaxTotal}"
+                                                IsReadOnly="True"
+                                                Grid.Column="1"
+                                               Style="{StaticResource EntryViewStyle}"/>
+
+                                <controls:EntryView Title="Total de Venta"
+                                                Text="{Binding GetProduct.TotalPrice}"
+                                                IsReadOnly="True" Grid.Column="2"
+                                                Style="{StaticResource EntryViewStyle}"/>
+
+
+                            </Grid>
+                            <!--#endregion-->
+                            
+                            
                             
                         </StackLayout>
                     </ScrollView>
@@ -120,9 +219,90 @@
                 <Button Style="{StaticResource TitleButonStyle}" 
                         Text="Crear" Grid.Row="2"
                         Margin="10"
-                        Command="{Binding CreateCategoryCommand}"
+                        Command="{Binding CreateCommand}"
                         TextTransform="None" />
             </Grid>
+
+            <pancake:PancakeView HeightRequest="500"
+                                     BackgroundColor="{StaticResource Gray-Black}"
+                                     CornerRadius="60,60,0,0"
+                                     HorizontalOptions="FillAndExpand"
+                                     VerticalOptions="EndAndExpand"
+                                     TranslationY="500"
+                                     Opacity="1">
+                <pancake:PancakeView.Triggers>
+                    <MultiTrigger TargetType="VisualElement">
+                        <MultiTrigger.Conditions>
+                            <BindingCondition Binding="{Binding IsAddCategory}" Value="True" />
+                        </MultiTrigger.Conditions>
+                        <MultiTrigger.EnterActions>
+                            <trigger:TVisualElementT Activate ="True" TranslateY="0"/>
+                        </MultiTrigger.EnterActions>
+                        <MultiTrigger.ExitActions>
+                            <trigger:TVisualElementT Activate ="False" TranslateY="1000"/>
+                        </MultiTrigger.ExitActions>
+
+                    </MultiTrigger>
+                </pancake:PancakeView.Triggers>
+
+                <StackLayout Padding="20,2,20,20" VerticalOptions="FillAndExpand">
+                    <StackLayout.GestureRecognizers>
+                        <SwipeGestureRecognizer Direction="Down" Command="{Binding ModalCategoryCommand}"/>
+                    </StackLayout.GestureRecognizers>
+
+                    <BoxView Style="{StaticResource BoxViewHandleStyle}"/>
+
+                    <Label Style="{StaticResource TitleLabelStyle}" 
+                           TextColor="{StaticResource Gray-100}"
+                           FontAttributes="Bold" Text="Agregar Categoría." />
+                    <CollectionView x:Name="ListCategories"
+                                    ItemsSource="{Binding GetCategory}" 
+                                    SelectionMode="Multiple"
+                                    VerticalOptions="CenterAndExpand">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Span="2" HorizontalItemSpacing="20" Orientation="Vertical" VerticalItemSpacing="20" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+
+                                <Grid>
+                                    <Frame Style="{StaticResource FrameStyle}"
+                                           BackgroundColor="{StaticResource Gray-100}"
+                                           Margin="5"
+                                           CornerRadius="15">
+                                        <StackLayout Margin="10">
+                                            <Frame Style="{StaticResource FrameStyle}" 
+                                           WidthRequest="70" 
+                                           HeightRequest="70" 
+                                           HorizontalOptions="Center" VerticalOptions="Center">
+                                                <Image Source="{Binding Image}" WidthRequest="70" />
+                                            </Frame>
+
+                                            <Label Text="{Binding Name}" TextColor="{StaticResource Gray-Black}"
+                                                   Style="{StaticResource TitleLabelStyle}"
+                                                   TextTransform="Uppercase"
+                                                   FontSize="15"
+                                                   HorizontalOptions="Center"/>
+
+                                        </StackLayout>
+                                    </Frame>
+                                </Grid>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        
+                    </CollectionView>
+
+
+
+                    <Button Style="{StaticResource TitleButonStyle}" 
+                        Text="Listo" 
+                            CommandParameter="{Binding Source={x:Reference ListCategories}}"
+                        Command="{Binding AddCategoryCommand}"
+                        TextTransform="None" />
+
+                </StackLayout>
+            </pancake:PancakeView>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -27,6 +27,12 @@ namespace AppCompras.Services
             _ClientFireBase = new FirebaseClient(AppSettings.UrlFirebase,
                   new FirebaseOptions
                   {
+                      
+                      JsonSerializerSettings = new JsonSerializerSettings
+                      {
+                          NullValueHandling= NullValueHandling.Ignore,
+                          DefaultValueHandling= DefaultValueHandling.Ignore
+                      },
                       AuthTokenAsyncFactory = () => Token()
                   });
         

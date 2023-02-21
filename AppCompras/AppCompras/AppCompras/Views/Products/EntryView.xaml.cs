@@ -54,9 +54,15 @@ namespace AppCompras.Views.Products
 
         public static readonly BindableProperty entryTextProperty =
         BindableProperty.Create(
-                    "entryText", typeof(string), typeof(EntryView), null, BindingMode.TwoWay);
+                    "entryText", typeof(string), typeof(EntryView), string.Empty, BindingMode.TwoWay, default, propertyChanged: TextChanged);
 
-
+        private static void TextChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (bindable != null)
+            {
+                ((EntryView)bindable).entryText = newValue.ToString();
+            }
+        }
 
 
         public string entryText

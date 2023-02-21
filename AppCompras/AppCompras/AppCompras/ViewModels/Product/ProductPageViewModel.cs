@@ -29,7 +29,12 @@ namespace AppCompras.ViewModels.Product
         #region Properties
         public Grid CollectionProducts
         {
-            get => _collectionProducts;
+            get
+            {
+                if(_collectionProducts == null)
+                    _collectionProducts = new Grid();
+                return _collectionProducts;
+            }
             set => SetProperty(ref _collectionProducts, value);
         }
         /// <summary>
@@ -75,12 +80,12 @@ namespace AppCompras.ViewModels.Product
 
             #endregion
             var result = await _serviceFireBase.GetProducts();
-            if(result.Success)
+            if (result.Success)
             {
                 GetProducts = new List<Products>((IEnumerable<Products>)result.Object);
                 CollectionProduct(GetProducts);
             }
-            
+
         }
 
 
@@ -136,14 +141,14 @@ namespace AppCompras.ViewModels.Product
                 {
                     new Image
                     {
-                        Source = item.GetImageSource[0].Source,
+                        Source = item.Base64Image.Count > 0 ? item.GetImageSource[0].Source : null,
                         HeightRequest = 100,
                         HorizontalOptions = LayoutOptions.Center,
                         Margin = new Thickness(0, 5)
                     },
                     new Label
                     {
-                        Text = "$" + item.PriceBruto,
+                        Text = $"{item.TotalPrice:C2}",
                         FontAttributes = FontAttributes.Bold,
                         FontSize = 22,
                         Margin = new Thickness(0, 6),

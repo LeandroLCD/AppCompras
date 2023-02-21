@@ -22,7 +22,7 @@
                                            CornerRadius="10"
                                            IsReadOnly="{Binding Source={Reference contentView}, Path=IsEnabled, Converter={StaticResource InverseBoolConverter}}"
                                                BorderThickness="2"
-                                               TextTransform="Uppercase"
+                                               TextTransform="Uppercase" 
                                                Padding="15,5,5,0"
                                            BackgroundColor="{Binding Source={x:Reference contentView}, Path=BackgroundColor}"
                                                BorderColor="{StaticResource Gray-Black}" 

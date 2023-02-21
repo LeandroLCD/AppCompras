@@ -2,7 +2,8 @@
 <ResourceDictionary
     x:Class="AppCompras.Styles.OthersStyles"
     xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:control="clr-namespace:AppCompras.Controls">
 
     <!--  Common style for Title labels  -->
     <Style x:Key="FrameStyle" TargetType="Frame">
@@ -17,7 +18,7 @@
 
     <Style x:Key="FrameEntryStyle" TargetType="Frame">
         <Setter Property="CornerRadius" Value="10" />
-        <Setter Property="BackgroundColor" Value="{DynamicResource Gray-200}" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource Gray-100}" />
         <Setter Property="HeightRequest" Value="80" />
         <Setter Property="Margin" Value="0,50,0,20" />
         <Setter Property="HasShadow" Value="False" />
@@ -34,6 +35,15 @@
         <Setter Property="WidthRequest" Value="50" />
         <Setter Property="Margin" Value="5" />
 
+    </Style>
+    <Style x:Key="EntryViewStyle" TargetType="control:EntryView">
+
+        <Setter Property="BackgroundColor" Value="{DynamicResource Gray-100}"/>
+        <Setter Property="TitleColor" Value="Black"/>
+        <Setter Property="BorderColor" Value="Black" />
+        <Setter Property="BorderWidth" Value="1"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
     </Style>
 
 

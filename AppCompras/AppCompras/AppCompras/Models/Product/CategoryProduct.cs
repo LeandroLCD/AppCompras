@@ -10,11 +10,12 @@ namespace AppCompras.Models.Product
 {
     public class CategoryProduct
     {
-        [JsonIgnore]
+        
         public string Id { get; set; }
 
         public string Name { get; set; }
 
+        [JsonIgnore]
         public string Base64Image { get; set; }
 
         [JsonIgnore]

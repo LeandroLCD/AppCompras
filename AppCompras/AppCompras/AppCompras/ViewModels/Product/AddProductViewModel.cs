@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -11,20 +12,35 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace AppCompras.ViewModels.Product
 {
-    public class AddProductViewModel: ProductPageViewModel
+    public class AddProductViewModel: BaseViewModel
     {
         #region Fields
         private Products _product;
         private bool _isEdit;
         private bool _isSelectCamFolder;
         private ObservableCollection<CategoryProduct> _categories;
+        private bool _isAddCategory;
+        private Command<object> _addCategoryCommand;
+        private Command<CategoryProduct> _deletCategoryCommand;
+        private Command<object> _addTaxesCommand;
+        private bool _isAddTaxes;
+        private Command<Tax> _deleteTaxesCommand;
+        private string _name;
+        private Command _getProductChangedCommand;
+        private Command _modalTaxesCommand;
+        private Command _modalCategoryCommand;
+        private Command<object> _showImageCommand;
+        private Command<ImageX> _deleteImageCommand;
+        private Command<object> _createCommand;
+        private ObservableCollection<CategoryProduct> _getProductCategories;
+        private ObservableCollection<Tax> _getProductTaxes;
 
         #endregion
 
         #region Ctor
         public AddProductViewModel()
         {
-            if(ProductSelect != null)
+            if(EditProduct != null)
             {
                 IsEdit = true;
             }
@@ -35,6 +51,8 @@ namespace AppCompras.ViewModels.Product
         #endregion
 
         #region Properties
+
+        public static Products EditProduct { get; set; }
         public bool IsEdit
         {
             get => _isEdit;
@@ -55,28 +73,107 @@ namespace AppCompras.ViewModels.Product
             set => SetProperty(ref _product, value);
 
         }
-        public bool IsSelectCamFolder
+        public bool IsSelectCamFolder 
         {
             get => _isSelectCamFolder;
             set => SetProperty(ref _isSelectCamFolder, value);
         }
+        public bool IsAddCategory 
+        {
+            get => _isAddCategory;
+            set => SetProperty(ref _isAddCategory, value);
+        }
+
+        public bool IsAddTaxes
+        {
+            get => _isAddTaxes;
+            set => SetProperty(ref _isAddTaxes, value);
+        }
+
+        public string Name
+        {
+            get => _name;
+            set=> SetProperty(ref _name, value);
+        }
         public ObservableCollection<CategoryProduct> GetCategory
         {
-            get => _categories;
+            get 
+            {
+                if(_categories == null)
+                    _categories = new ObservableCollection<CategoryProduct>();
+                return _categories;
+            }
             set=> SetProperty(ref _categories, value);
+        }
+        public ObservableCollection<CategoryProduct> GetProductCategories
+        {
+            get
+            {
+                if (_getProductCategories == null)
+                    _getProductCategories = new ObservableCollection<CategoryProduct>();
+                return _getProductCategories;
+            }
+            set => SetProperty(ref _getProductCategories, value);
         }
         #endregion
 
         #region Command
-        public Command<object> CreateCommand { get; set; }
+        public Command<object> CreateCommand
+        {
+            get => _createCommand;
+            set => SetProperty(ref _createCommand, value);
+        }
 
         public Command<object> UpdateCommand { get; set; }
 
         public Command SelectImageCommand { get; set; }
+        public Command ModalCategoryCommand
+        {
+            get => _modalCategoryCommand;
+            set => SetProperty(ref _modalCategoryCommand, value);
+        }
+        public Command<object> AddCategoryCommand 
+        {
+            get => _addCategoryCommand;
+            set => SetProperty(ref _addCategoryCommand, value);
+        }
+        public Command<CategoryProduct> DeleteCategoryCommand
+        {
+            get => _deletCategoryCommand;
+            set => SetProperty(ref _deletCategoryCommand, value);
+        }
+        public Command<Tax> DeleteTaxesCommand
+        {
+            get => _deleteTaxesCommand;
+            set => SetProperty(ref _deleteTaxesCommand, value);
+        }
+        public Command<object> AddTaxesCommand
+        {
+            get => _addTaxesCommand;
+            set => SetProperty(ref _addTaxesCommand, value);
+        }
+        public Command ModalTaxesCommand
+        {
+            get => _modalTaxesCommand;
+            set => SetProperty(ref _modalTaxesCommand, value);
+        }
+        public Command<object> ShowImageCommand
+        {
+            get => _showImageCommand;
+            set=> SetProperty(ref _showImageCommand, value);
+        }
 
-        public Command<object> ShowImageCommand { get; set; }
+        public Command<ImageX> DeleteImageCommand
+        {
+            get => _deleteImageCommand;
+            set=> SetProperty(ref _deleteImageCommand, value);
+    }
 
-        public Command<ImageX> DeleteImageCommand { get; set; }
+    public Command GetProductChangedCommand
+        {
+            get => _getProductChangedCommand;
+            set => SetProperty(ref _getProductChangedCommand, value);
+        }
 
         #endregion
 
@@ -85,13 +182,116 @@ namespace AppCompras.ViewModels.Product
         {
             var result = await _serviceFireBase.GetCategories();
             GetCategory = new ObservableCollection<CategoryProduct>(result.Success == true ? (IEnumerable<CategoryProduct>)result.Object: new List<CategoryProduct>());
-            
+
+            ModalCategoryCommand = new Command(() => IsAddCategory = !IsAddCategory);
+
+            ModalTaxesCommand = new Command(() => IsAddTaxes = !IsAddTaxes);
+
+            DeleteCategoryCommand = new Command<CategoryProduct>(DeleteCategory);
+
+            DeleteTaxesCommand = new Command<Tax>(DeleteTax);
 
             SelectImageCommand = new Command(() => IsSelectCamFolder = !IsSelectCamFolder);
+
+            GetProductChangedCommand = new Command(() =>
+            {
+                NotifyPropertyChanged(nameof(GetProduct));
+            });
 
             ShowImageCommand = new Command<object>(AddImageAsync);
 
             DeleteImageCommand = new Command<ImageX>(DeleteImage);
+
+            AddCategoryCommand = new Command<object>(AddCategory);
+
+            AddTaxesCommand = new Command<object>(AddTaxes);
+
+            CreateCommand = new Command<object>(CreateProduct);
+
+
+
+        }
+
+        private async void CreateProduct(object obj)
+        {
+            try
+            {
+                #region Validate
+
+                if(string.IsNullOrEmpty(GetProduct.Name))
+                {
+                   await _displayAlert.Show("Debes ingresar un nombre valido para el producto");
+                    return;
+                }
+                if(GetProduct.GrossPrice == 0) 
+                {
+                    await _displayAlert.Show("Debes ingresar un precio valido para el producto");
+                    return;
+                }
+                if(string.IsNullOrEmpty(GetProduct.Sku) && GetProduct.BarCode < 1000)
+                {
+                    await _displayAlert.Show("Debes ingresar un código de barras o Sku para el producto");
+                    return;
+                }
+
+                #endregion
+
+                #region insert product
+                var result = await _serviceFireBase.InsertProduct(GetProduct);
+                if (result.Success) 
+                {
+                    _displayAlert.Toast("Se creo correctamente el producto");
+                    GetProduct = null;
+                }
+                #endregion
+
+            }
+            catch (Exception ex)
+            {
+                await _displayAlert.Show($"Se produjo un error al intentar crear el producto. código:{ex.GetHashCode()}.\nDetalles: {ex.Message}");
+            }
+        }
+
+        private void AddTaxes(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AddCategory(object obj)
+        {
+            if (obj == null) return;
+            var list = (obj as CollectionView).SelectedItems.ToList();
+            if(list.Count > 0)
+            {
+                
+                foreach (var item in list)
+                {
+                    var category = (CategoryProduct)item;
+                    if(!GetProduct.Categories.Exists(c => c.Id == category.Id))
+                    {
+                        GetProduct.Categories.Add(category);
+                        GetProductCategories.Add(category);
+                    }
+                }
+
+            }
+            (obj as CollectionView).SelectedItems = null;
+            IsAddCategory = !IsAddCategory;
+        }
+
+        private void DeleteTax(Tax obj)
+        {
+            var p = GetProduct;
+        }
+
+        private void DeleteCategory(CategoryProduct obj)
+        {
+            var category = (CategoryProduct)obj;
+            if(category != null)
+            {
+                GetProduct.Categories.Remove(category);
+                GetProductCategories.Remove(category);
+            }
         }
 
         private void DeleteImage(ImageX image)

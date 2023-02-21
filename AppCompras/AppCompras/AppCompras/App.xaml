@@ -18,7 +18,21 @@
             <converter:TextLengthToBolean x:Key="TextLengthToBolean"/>
             <converter:DisplayItemConverter x:Key="DisplayItemConverter"/>
         </ResourceDictionary>
-        
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="#fcbc0f" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
     </Application.Resources>
     
 </Application>
